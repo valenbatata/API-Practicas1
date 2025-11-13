@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import Optional, List
 from sqlmodel import SQLModel, Field, create_engine, Session, select
 import os
-from contextlib import asynccontextmanager # <--- Importa esto
+from contextlib import asynccontextmanager 
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 engine = None
@@ -35,7 +35,7 @@ def obtener_sesion():
     with Session(engine) as session:
         yield session
 
-# --- NUEVO: Lifespan (reemplaza on_startup) ---
+# --- Lifespan (reemplaza on_startup) ---
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Código que se ejecuta ANTES de que la API empiece
@@ -46,15 +46,10 @@ async def lifespan(app: FastAPI):
     print("Cerrando API.")
 
 # --- Crea la Aplicación ---
-app = FastAPI(lifespan=lifespan) # <--- Pasa el lifespan aquí
+app = FastAPI(lifespan=lifespan) # <--- Pasa el lifespan 
 
-# --- ELIMINA ESTO: ---
-# @app.on_event("startup")
-# def on_startup():
-#     crear_db_y_tablas()
 
 # --- Endpoints (health, crear_articulo, leer_articulos) ---
-
 @app.get("/health")
 def health_check():
     return {"status": "ok", "message": "API funcionando"}
